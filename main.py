@@ -95,11 +95,11 @@ info = get_info()
 date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
 today_date = json.dumps(date.today(), cls=ComplexEncoder)
 
-data = {"city":{"value":city}, "date":{"value":today_date, "color":get_random_color()}, "weather":{"value":wea, "color":get_random_color()},
-        "temperature":{"value":(str(temperature) + "℃"), "color":get_random_color()},
-        "love_days":{"value":get_count(), "color":get_random_color()},"birthday_left":{"value":get_birthday(), "color":get_random_color()},
-        "words":{"value":get_words(), "color":get_random_color()}, "color_1": {"value": color_1, "color": get_random_color()}, "date_1": {"value": date_1, "color": get_random_color()},
-        "title": {"value": title, "color": get_random_color()}, "summary": {"value": summary, "color": get_random_color()}, 
-        "info": {"value": info, "color": get_random_color()}, "number": {"value": number}}
+data = {"city":{"value":city}, "date":{"value":today_date}, "weather":{"value":wea},
+        "temperature":{"value":(str(temperature) + "℃")},
+        "love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},
+        "words":{"value":get_words()}, "color_1": {"value": color_1}, "date_1": {"value": date_1},
+        "title": {"value": title}, "summary": {"value": summary}, 
+        "info": {"value": info}, "number": {"value": number}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
