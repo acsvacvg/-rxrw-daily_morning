@@ -7,9 +7,9 @@ import os
 import random
 
 today = datetime.now()
-start_date = os.environ['START_DATE']
-city = os.environ['CITY']
-birthday = os.environ['BIRTHDAY']
+start_date = os.environ['2023-05-01']
+city = os.environ['大同']
+birthday = os.environ['05-14']
 
 app_id = os.environ["APP_ID"]
 app_secret = os.environ["APP_SECRET"]
