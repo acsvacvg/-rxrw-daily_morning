@@ -74,7 +74,7 @@ def get_random_color():
 def get_lucky():
   url = "http://web.juhe.cn:8080/constellation/getAll?consName=金牛座&type=today&key=4a11bbcbf089edaf14c2d9bdb80c2ec4"
   res = requests.get(url).json()
-  return res['color'],res['summary']
+  return res['color'],res['summary'][26:]
 
 def get_info():
   url = "http://v.juhe.cn/toutiao/index?type=yule&key=d268884b9b07c0eb9d6093dc54116018"
