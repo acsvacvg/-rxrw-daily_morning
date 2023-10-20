@@ -79,7 +79,7 @@ today_date = json.dumps(date.today(), cls=ComplexEncoder)
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
 color,summary = get_lucky()
-date,title = get_history()
+date1,title = get_history()
 info = get_info()
 
 data = {"city":{"value":city}, "date":{"value":today_date, "color":get_random_color()}, "weather":{"value":wea, "color":get_random_color()},
