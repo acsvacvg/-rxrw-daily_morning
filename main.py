@@ -30,6 +30,20 @@ class ComplexEncoder(json.JSONEncoder):
             return obj.strftime('%Y-%m-%d')
         else:
             return json.JSONEncoder.default(self, obj)
+            
+class MyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime.datetime):
+            print("MyEncoder-datetime.datetime")
+            return obj.strftime("%Y-%m-%d %H:%M:%S")
+        if isinstance(obj, bytes):
+            return str(obj, encoding='utf-8')
+        if isinstance(obj, int):
+            return int(obj)
+        elif isinstance(obj, float):
+            return float(obj)
+        else:
+            return super(MyEncoder, self).default(obj)
 
 def get_weather():
   url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
@@ -81,11 +95,12 @@ wea, temperature = get_weather()
 color,summary = get_lucky()
 date1,title = get_history()
 info = get_info()
+date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
 
 data = {"city":{"value":city}, "date":{"value":today_date, "color":get_random_color()}, "weather":{"value":wea, "color":get_random_color()},
         "temperature":{"value":(str(temperature) + "℃"), "color":get_random_color()},
         "love_days":{"value":get_count(), "color":get_random_color()},"birthday_left":{"value":get_birthday(), "color":get_random_color()},
-        "words":{"value":get_words(), "color":get_random_color()}, "color": {"value": color, "color": get_random_color()}, "date1": {"value": date, "color": get_random_color()},
+        "words":{"value":get_words(), "color":get_random_color()}, "color": {"value": color, "color": get_random_color()}, "date_1": {"value": date, "color": get_random_color()},
         "title": {"value": title, "color": get_random_color()}, "summary": {"value": summary, "color": get_random_color()}, 
         "info": {"value": info, "color": get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
