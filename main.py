@@ -56,20 +56,17 @@ def get_words():
 def get_random_color():
   return "#%06x" % random.randint(0, 0xFFFFFF)
 
-// 获取星座
 def get_lucky():
   url = "http://web.juhe.cn:8080/constellation/getAll?consName=金牛座&type=today&key=4a11bbcbf089edaf14c2d9bdb80c2ec4"
   res = requests.get(url).json()
   return res['color'],res['summary']
 
-// 新闻
 def get_info():
   url = "http://v.juhe.cn/toutiao/index?type=yule&key=d268884b9b07c0eb9d6093dc54116018"
   res = requests.get(url).json()['result']
   info = res['data'][0]['title']
   return info
 
-// 获取历史上的今天
 def get_history():
   url = "https://api.oick.cn/lishi/api.php"
   res= requests.get(url).json()
