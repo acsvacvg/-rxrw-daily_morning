@@ -84,17 +84,16 @@ def get_history():
   url = "https://api.oick.cn/lishi/api.php"
   res= requests.get(url).json()
   history = res['result'][0]
-  return history['date'],history['title']
+  return history['date'][:4],history['title']
 
 client = WeChatClient(app_id, app_secret)
-today_date = json.dumps(date.today(), cls=ComplexEncoder)
-
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
 color_1,summary,number = get_lucky()
 date1,title = get_history()
 info = get_info()
 date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
+today_date = json.dumps(date.today(), cls=ComplexEncoder)
 
 data = {"city":{"value":city}, "date":{"value":today_date, "color":get_random_color()}, "weather":{"value":wea, "color":get_random_color()},
         "temperature":{"value":(str(temperature) + "℃"), "color":get_random_color()},
