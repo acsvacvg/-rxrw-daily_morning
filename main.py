@@ -6,7 +6,7 @@ import requests
 import os
 import random
 
-today = datetime.now()
+today = datetime.datetime.now()
 start_date = os.environ['START_DATE']
 city = os.environ['CITY']
 birthday = os.environ['BIRTHDAY']
