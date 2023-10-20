@@ -36,7 +36,7 @@ class MyEncoder(json.JSONEncoder):
         if isinstance(obj, datetime):
             return obj.strftime("%Y-%m-%d %H:%M:%S")
         elif isinstance(obj, bytes):
-            return str(obj, encoding='utf-8')
+            return str(obj, encoding='jbk')
         elif isinstance(obj, date):
             return obj.strftime('%Y-%m-%d')
         elif isinstance(obj, int):
@@ -74,7 +74,7 @@ def get_random_color():
 def get_lucky():
   url = "http://web.juhe.cn:8080/constellation/getAll?consName=金牛座&type=today&key=4a11bbcbf089edaf14c2d9bdb80c2ec4"
   res = requests.get(url).json()
-  return res['color'],res['summary'][26:]
+  return res['color'],res['QFriend'],res['number']
 
 def get_info():
   url = "http://v.juhe.cn/toutiao/index?type=yule&key=d268884b9b07c0eb9d6093dc54116018"
@@ -93,7 +93,7 @@ today_date = json.dumps(date.today(), cls=ComplexEncoder)
 
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
-color,summary = get_lucky()
+color_1,summary,number = get_lucky()
 date1,title = get_history()
 info = get_info()
 date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
@@ -101,8 +101,8 @@ date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
 data = {"city":{"value":city}, "date":{"value":today_date, "color":get_random_color()}, "weather":{"value":wea, "color":get_random_color()},
         "temperature":{"value":(str(temperature) + "℃"), "color":get_random_color()},
         "love_days":{"value":get_count(), "color":get_random_color()},"birthday_left":{"value":get_birthday(), "color":get_random_color()},
-        "words":{"value":get_words(), "color":get_random_color()}, "color": {"value": color, "color": get_random_color()}, "date_1": {"value": date_1, "color": get_random_color()},
+        "words":{"value":get_words(), "color":get_random_color()}, "color_1": {"value": color_1, "color": get_random_color()}, "date_1": {"value": date_1, "color": get_random_color()},
         "title": {"value": title, "color": get_random_color()}, "summary": {"value": summary, "color": get_random_color()}, 
-        "info": {"value": info, "color": get_random_color()}}
+        "info": {"value": info, "color": get_random_color()}, "number": {"value": number}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
