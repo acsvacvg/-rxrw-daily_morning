@@ -44,45 +44,11 @@ class MyEncoder(json.JSONEncoder):
         else:
             return super(MyEncoder, self).default(obj)
 
-# def get_weather():
-#   url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
-#   res = requests.get(url).json()
-#   weather = res['data']['list'][0]
-#   return weather['weather'], math.floor(weather['low'])
-
-def getInfo(location):
-    """
-    Get More Weather Information.
-    Arguments:
-        location {String} -- location html
-
-    Returns:
-        String -- Information
-    """
-    response = requests.get(html)
-    content = response.content.decode("utf-8")
-    aim = re.findall(
-        r'<input type="hidden" id="hidden_title" value="(.*?)月(.*?)日(.*?)时(.*?) (.*?)  (.*?)  (.*?)"', content)
-    airdata = re.findall(
-        r'<li class="li6">\n<i></i>\n<span>(.*?)</span>\n<em>(.*?)</em>\n<p>(.*?)</p>', content)
-    ult_index = re.findall(
-        r'<li class="li1">\n<i></i>\n<span>(.*?)</span>\n<em>(.*?)</em>\n<p>(.*?)</p>\n</li>', content)
-    cloth_index = re.findall(
-        r'<i></i>\n<span>(.*?)</span>\n<em>(.*?)</em>\n<p>(.*?)</p>\n</a>\n</li>\n<li class="li4">', content)
-    # wash_index = re.findall(r'<li class="li4">\n<i></i>\n<span>(.*?)</span>\n<em>(.*?)</em>\n<p>(.*?)</p>', content)
-    lose_index = re.findall(
-        r'</span>\n<em>(.*?)</em>\n<p>(.*?)</p>\n</a>\n</li>\n<li class="li5">', content)
-    # print(lose_index)
-    txt1 = '@天气预报:'+'\n'
-    txt2 = '天气情况: '+aim[0][5]+'\n'+'温度情况: '+aim[0][6]+'\n'
-    txt3 = '穿衣指数: '+cloth_index[0][0]+', '+cloth_index[0][2]+'\n'
-    txt4 = '减肥指数：' + lose_index[0][1]+'\n'
-    txt5 = '空气指数: '+airdata[0][0]+', '+airdata[0][2]+'\n'
-    txt6 = '紫外线指数: '+ult_index[0][0]+', '+ult_index[0][2]+'\n'
-
-    more_information = '\n'+txt1+txt2+txt3+txt4+txt5+txt6
-    return more_information
-
+def get_weather():
+  url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
+  res = requests.get(url).json()
+  weather = res['data']['list'][0]
+  return weather['weather'], math.floor(weather['low'])
 
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
@@ -122,16 +88,15 @@ def get_history():
 
 client = WeChatClient(app_id, app_secret)
 wm = WeChatMessage(client)
-# wea, temperature = get_weather()
+wea, temperature = get_weather()
 color_1,summary,number = get_lucky()
 date1,title = get_history()
 info = get_info()
 date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
 today_date = json.dumps(date.today(), cls=ComplexEncoder)
-more_information = getInfo("大同")
 
-data = {"city":{"value":city}, "date":{"value":today_date}, "weather":{"value":more_information},
-        # "temperature":{"value": temperature},
+data = {"city":{"value":city}, "date":{"value":today_date}, "weather":{"value":wea},
+        "temperature":{"value": temperature},
         "love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},
         "words":{"value":get_words()}, "color_1": {"value": color_1}, "date_1": {"value": date_1},
         "title": {"value": title}, "summary": {"value": summary}, 
