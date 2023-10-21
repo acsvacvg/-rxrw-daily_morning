@@ -44,11 +44,58 @@ class MyEncoder(json.JSONEncoder):
         else:
             return super(MyEncoder, self).default(obj)
 
+# def get_weather():
+#   url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
+#   res = requests.get(url).json()
+#   weather = res['data']['list'][0]
+#   return weather['weather'], math.floor(weather['low'])
+
 def get_weather():
-  url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
-  res = requests.get(url).json()
-  weather = res['data']['list'][0]
-  return weather['weather'], math.floor(weather['low'])
+    url = 'https://www.weather.com.cn/weather1d/101100201.shtml'
+    sysdate=datetime.date.today()
+    r = requests.get(url)  # 用requests抓取网页信息
+    r.raise_for_status()  # 可以让程序产生异常时停止程序
+    r.encoding = r.apparent_encoding #编码格式
+    html=r.text
+
+    final_list = []
+    soup = BeautifulSoup(html, 'html.parser')  # 用BeautifulSoup库解析网页 #soup里有对当前天气的建议
+    body = soup.body #从soup里截取body的一部分
+    data = body.find('div', {'id': '7d'})
+    ul = data.find('ul')
+    lis = ul.find_all('li')
+
+    for day in lis:
+        temp_list = []
+
+        date = day.find('h1').string  # 找到日期
+        if date.string.split('日')[0]==str(sysdate.day):
+            temp_list = []
+
+            date = day.find('h1').string  # 找到日期
+            temp_list.append(date)
+
+            info = day.find_all('p')  # 找到所有的p标签
+            temp_list.append(info[0].string)
+
+            if info[1].find('span') is None:  # 找到p标签中的第二个值'span'标签——最高温度
+                temperature_highest = ' '  # 用一个判断是否有最高温度
+            else:
+                temperature_highest = info[1].find('span').string
+                temperature_highest = temperature_highest.replace('℃', ' ')
+
+            if info[1].find('i') is None:  # 找到p标签中的第二个值'i'标签——最高温度
+                temperature_lowest = ' '  # 用一个判断是否有最低温度
+            else:
+                temperature_lowest = info[1].find('i').string
+                temperature_lowest = temperature_lowest.replace('℃', ' ')
+
+            temp_list.append(temperature_highest)  # 将最高气温添加到temp_list中
+            temp_list.append(temperature_lowest)  # 将最低气温添加到temp_list中
+
+            final_list.append(temp_list)  # 将temp_list列表添加到final_list列表中
+            text_weather = '天气情况是' + final_list[0][1] + ',温度是' + final_list[0][3].strip() + '~' + final_list[0][2].strip() + '摄氏度'
+            return text_weather
 
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
@@ -88,7 +135,7 @@ def get_history():
 
 client = WeChatClient(app_id, app_secret)
 wm = WeChatMessage(client)
-wea, temperature = get_weather()
+wea = get_weather()
 color_1,summary,number = get_lucky()
 date1,title = get_history()
 info = get_info()
@@ -96,7 +143,7 @@ date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
 today_date = json.dumps(date.today(), cls=ComplexEncoder)
 
 data = {"city":{"value":city}, "date":{"value":today_date}, "weather":{"value":wea},
-        "temperature":{"value": temperature},
+        # "temperature":{"value": temperature},
         "love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},
         "words":{"value":get_words()}, "color_1": {"value": color_1}, "date_1": {"value": date_1},
         "title": {"value": title}, "summary": {"value": summary}, 
