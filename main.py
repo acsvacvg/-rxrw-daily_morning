@@ -144,7 +144,7 @@ color_1,summary,number = get_lucky()
 date1,title = get_history()
 info = get_info()
 date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
-today_date = json.dumps(date.today(), cls=ComplexEncoder)
+today_date = json.dumps(today, cls=ComplexEncoder)
 
 data = {"city":{"value":city}, "date":{"value":today_date}, "weather":{"value":wea},
         # "temperature":{"value": temperature},
