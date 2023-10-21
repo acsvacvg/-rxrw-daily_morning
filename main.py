@@ -52,7 +52,7 @@ class MyEncoder(json.JSONEncoder):
 #   return weather['weather'], math.floor(weather['low'])
 
 def get_weather():
-    url = 'https://www.weather.com.cn/weather1d/101100201.shtml'
+    url = 'http://www.weather.com.cn/weather/101100201.shtml'
     sysdate=datetime.date.today()
     r = requests.get(url)  # 用requests抓取网页信息
     r.raise_for_status()  # 可以让程序产生异常时停止程序
