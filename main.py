@@ -7,13 +7,12 @@ import os
 import random
 import json
 from requests.packages import urllib3
-import datetime
 import os
 import random
 from bs4 import BeautifulSoup
 
 
-today = datetime.datetime.now()
+today = datetime.now()
 start_date = os.environ['START_DATE']
 city = os.environ['CITY']
 birthday = os.environ['BIRTHDAY']
@@ -56,7 +55,7 @@ class MyEncoder(json.JSONEncoder):
 
 def get_weather():
     url = 'http://www.weather.com.cn/weather/101100201.shtml'
-    sysdate=datetime.date.today()
+    sysdate = datetime.today()
     r = requests.get(url)  # 用requests抓取网页信息
     r.raise_for_status()  # 可以让程序产生异常时停止程序
     r.encoding = r.apparent_encoding #编码格式
@@ -144,7 +143,7 @@ color_1,summary,number = get_lucky()
 date1,title = get_history()
 info = get_info()
 date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
-today_date = json.dumps(today, cls=ComplexEncoder)
+today_date = json.dumps(date.today(), cls=ComplexEncoder)
 
 data = {"city":{"value":city}, "date":{"value":today_date}, "weather":{"value":wea},
         # "temperature":{"value": temperature},
