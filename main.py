@@ -54,9 +54,10 @@ class MyEncoder(json.JSONEncoder):
 #   return weather['weather'], math.floor(weather['low'])
 
 def get_weather():
+    headers = {"Cookie":"b - user - id = 2e3490c0 - a0b1 - 41b5 - 51e0 - 746a4acc140f;userNewsPort0 = 1;f_city = % E5 % A4 % A7 % E5 % 90 % 8C % 7C101100201 % 7C;defaultCty = 101100201;defaultCtyName = % u5927 % u540C;Hm_lvt_080dabacb001ad3dc8b9b9049b36d43b = 1697898452, 1697901585, 1697906390;Hm_lpvt_080dabacb001ad3dc8b9b9049b36d43b = 1697906575"}
     url = 'http://www.weather.com.cn/weather/101100201.shtml'
     sysdate = datetime.today()
-    r = requests.get(url)  # 用requests抓取网页信息
+    r = requests.get(url, headers=headers)  # 用requests抓取网页信息
     r.raise_for_status()  # 可以让程序产生异常时停止程序
     r.encoding = r.apparent_encoding #编码格式
     html=r.text
