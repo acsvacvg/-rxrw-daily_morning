@@ -61,12 +61,12 @@ def get_weather():
         'Connection': 'keep-alive',
         'Cookie': 'HttpOnly; userNewsPort0=1; Hm_lvt_080dabacb001ad3dc8b9b9049b36d43b=1660634957; f_city=%E9%87%91%E5%8D%8E%7C101210901%7C; defaultCty=101210901; defaultCtyName=%u91D1%u534E; Hm_lpvt_080dabacb001ad3dc8b9b9049b36d43b=1660639816',
         'Host': 'www.weather.com.cn',
-        'Referer': 'http://www.weather.com.cn/weather1d/101251101.shtml',
+        'Referer': 'http://www.weather.com.cn/weather1d/101100201.shtml',
         'Upgrade-Insecure-Requests': '1',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.81 Safari/537.36 Edg/104.0.1293.54'
  
     }
-    url = "http://www.weather.com.cn/weather/101251101.shtml"
+    url = "http://www.weather.com.cn/weather/101100201.shtml"
     response = get(url=url, headers=headers)
  
     text = response.content.decode('utf-8')
