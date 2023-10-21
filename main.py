@@ -98,8 +98,8 @@ def get_weather():
             temp_list.append(temperature_lowest)  # 将最低气温添加到temp_list中
 
             final_list.append(temp_list)  # 将temp_list列表添加到final_list列表中
-            text_weather = '天气情况是' + final_list[0][1] + ',温度是' + final_list[0][3].strip() + '~' + final_list[0][2].strip() + '摄氏度'
-            return text_weather
+            text_weather, text_min_temp, text_max_temp = final_list[0][1], final_list[0][3], final_list[0][2]
+            return text_weather, text_min_temp, text_max_temp
 
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
@@ -139,15 +139,15 @@ def get_history():
 
 client = WeChatClient(app_id, app_secret)
 wm = WeChatMessage(client)
-wea = get_weather()
+text_weather, text_min_temp, text_max_temp = get_weather()
 color_1,summary,number = get_lucky()
 date1,title = get_history()
 info = get_info()
 date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
 today_date = json.dumps(date.today(), cls=ComplexEncoder)
 
-data = {"city":{"value":city}, "date":{"value":today_date}, "weather":{"value":wea},
-        # "temperature":{"value": temperature},
+data = {"city":{"value":city}, "date":{"value":today_date}, "text_weather":{"value":text_weather},
+        "text_min_temp":{"value": text_min_temp}, "text_max_temp":{"value": text_max_temp},
         "love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},
         "words":{"value":get_words()}, "color_1": {"value": color_1}, "date_1": {"value": date_1},
         "title": {"value": title}, "summary": {"value": summary}, 
