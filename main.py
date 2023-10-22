@@ -132,8 +132,10 @@ def get_info():
   return info
 
 def get_history():
+    headres = {"User-Agent":
+"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"}
   url = "https://api.oick.cn/lishi/api.php"
-  res= requests.get(url).json()
+  res= requests.get(url, headers=headers).json()
   history = res['result'][0]
   return history['date'][:4],history['title']
 
