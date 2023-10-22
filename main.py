@@ -149,8 +149,7 @@ today_date = json.dumps(today, cls=ComplexEncoder)
 
 data = {"city":{"value":city}, "date":{"value":today_date}, "text_weather":{"value":text_weather},
         "text_min_temp":{"value": text_min_temp}, "text_max_temp":{"value": text_max_temp},
-        "love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},
-        "words":{"value":get_words()}, "color_1": {"value": color_1}, "date_1": {"value": date_1},
+        "love_days":{"value":get_count()}}, "words":{"value":get_words()}, "color_1": {"value": color_1}, "date_1": {"value": date_1},
         "title": {"value": title}, "summary": {"value": summary}, 
         "info": {"value": info}, "number": {"value": number}}
 res = wm.send_template(user_id, template_id, data)
