@@ -12,7 +12,7 @@ import random
 from bs4 import BeautifulSoup
 
 
-today = datetime.now() + timedelta(hours=9)
+today = datetime.now() + timedelta(hours=8)
 start_date = os.environ['START_DATE']
 city = os.environ['CITY']
 birthday = os.environ['BIRTHDAY']
@@ -56,7 +56,7 @@ class MyEncoder(json.JSONEncoder):
 def get_weather():
     headers = {"Cookie":"b - user - id = 2e3490c0 - a0b1 - 41b5 - 51e0 - 746a4acc140f;userNewsPort0 = 1;f_city = % E5 % A4 % A7 % E5 % 90 % 8C % 7C101100201 % 7C;defaultCty = 101100201;defaultCtyName = % u5927 % u540C;Hm_lvt_080dabacb001ad3dc8b9b9049b36d43b = 1697898452, 1697901585, 1697906390;Hm_lpvt_080dabacb001ad3dc8b9b9049b36d43b = 1697906575"}
     url = 'http://www.weather.com.cn/weather/101100201.shtml'
-    sysdate = datetime.today() + timedelta(hours=9)
+    sysdate = datetime.today() + timedelta(hours=8)
     r = requests.get(url, headers=headers)  # 用requests抓取网页信息
     r.raise_for_status()  # 可以让程序产生异常时停止程序
     r.encoding = r.apparent_encoding #编码格式
@@ -114,27 +114,33 @@ def get_count():
 def get_words():
   words = requests.get("https://api.shadiao.pro/chp")
   if words.status_code != 200:
-    return get_words()
-  return words.json()['data']['text']
+      return get_words()
+  else:
+      words = json.loads(words.text, strict=False)
+  return words['data']['text']
 
 def get_random_color():
   return "#%06x" % random.randint(0, 0xFFFFFF)
 
 def get_lucky():
   url = "http://web.juhe.cn:8080/constellation/getAll?consName=金牛座&type=today&key=4a11bbcbf089edaf14c2d9bdb80c2ec4"
-  res = requests.get(url).json()
-  return res['color'],res['QFriend'],res['number']
+  res = requests.get(url)
+  res = json.loads(res.text, strict=False)
+  return res['color'], res['QFriend'], res['number']
+
 
 def get_info():
   url = "http://v.juhe.cn/toutiao/index?type=yule&key=d268884b9b07c0eb9d6093dc54116018"
-  res = requests.get(url).json()['result']
+  res = requests.get(url)
+  res = json.loads(res.text, strict=False)['result']
   info = res['data'][0]['title']
   return info
 
 def get_history():
   headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"}
   url = "https://api.oick.cn/lishi/api.php"
-  res= requests.get(url, headers=headers).json()
+  res = requests.get(url, headers=headers)
+  res = json.loads(res.text, strict=False)
   history = res['result'][0]
   return history['date'][:4],history['title']
 
