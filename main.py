@@ -49,15 +49,10 @@ class MyEncoder(json.JSONEncoder):
         else:
             return super(MyEncoder, self).default(obj)
 
-# def get_weather():
-#   url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
-#   res = requests.get(url).json()
-#   weather = res['data']['list'][0]
-#   return weather['weather'], math.floor(weather['low'])
-
 def get_weather():
     headers = {"Cookie":"b - user - id = 2e3490c0 - a0b1 - 41b5 - 51e0 - 746a4acc140f;userNewsPort0 = 1;f_city = % E5 % A4 % A7 % E5 % 90 % 8C % 7C101100201 % 7C;defaultCty = 101100201;defaultCtyName = % u5927 % u540C;Hm_lvt_080dabacb001ad3dc8b9b9049b36d43b = 1697898452, 1697901585, 1697906390;Hm_lpvt_080dabacb001ad3dc8b9b9049b36d43b = 1697906575"}
-    url = 'http://www.weather.com.cn/weather/101100201.shtml'
+    # url = 'http://www.weather.com.cn/weather/101100201.shtml'    # 大同
+    url = 'http://www.weather.com.cn/weather/101101001.shtml'    # 忻州
     sysdate = datetime.today() + timedelta(hours=8)
     r = requests.get(url, headers=headers)  # 用requests抓取网页信息
     r.raise_for_status()  # 可以让程序产生异常时停止程序
