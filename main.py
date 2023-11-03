@@ -10,6 +10,8 @@ from requests.packages import urllib3
 import os
 import random
 from bs4 import BeautifulSoup
+import time
+import re
 
 
 today = datetime.now() + timedelta(hours=8)
@@ -136,19 +138,49 @@ def get_info():
   info = res['data'][0]['title']
   return info
 
-def get_history():
-  headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"}
-  url = "https://api.oick.cn/lishi/api.php"
-  res = requests.get(url, headers=headers)
-  res = json.loads(res.text, strict=False)
-  history = res['result'][0]
-  return history['date'][:4],history['title']
+# def get_history():
+#   headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"}
+#   url = "https://api.oick.cn/lishi/api.php"
+#   res = requests.get(url, headers=headers)
+#   res = json.loads(res.text, strict=False)
+#   history = res['result'][0]
+#   return history['date'][:4],history['title']
+
+def get_Month():
+  lt = time.localtime(time.time())
+  lt = lt[1]
+  if (lt>9):
+      return str(lt)
+  else:   # 月份小于10前面加个0，保证格式
+      return "0"+str(lt)
+
+def get_Day():
+  return str(time.localtime()[2])
+
+def get_ts(): # 获取时间戳
+  return time.time()
+
+def returnApi():
+  month = get_Month()
+  day = get_Day()
+  ts = get_ts()
+  headers = {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36",
+  }
+  if (len(day) != 2):
+    day = day+"0";
+  url = "https://baike.baidu.com/cms/home/eventsOnHistory/"+month+".json?_="+str(ts)
+  html = requests.get(url=url,headers=headers).json()
+  year = html[month][month + day][0]['year']  # 获取事件的年
+  title = html[month][month + day][0]['title']  # 获取事件的标题
+  title = re.sub(r'<.*?>', '', title)  # 去掉标题里一堆的超链接
+  return year, title
 
 client = WeChatClient(app_id, app_secret)
 wm = WeChatMessage(client)
 text_weather, text_min_temp, text_max_temp = get_weather()
 color_1,summary,number = get_lucky()
-date1,title = get_history()
+date1,title = returnApi()
 info = get_info()
 date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
 today_date = json.dumps(today, cls=ComplexEncoder)
