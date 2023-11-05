@@ -162,7 +162,7 @@ def get_infomation():
   c = a + b
 
   information = requests.get("http://hao.360.com/histoday/" + str(c) + ".html").text
-  s = BeautifulSoup(information, "lxml").find_all(name='div', class_='tih-list')
+  s = BeautifulSoup(information, "xml").find_all(name='div', class_='tih-list')
 
   for x in s:
     xx = x.find_all(name="dt")
