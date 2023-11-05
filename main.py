@@ -2,7 +2,6 @@ from datetime import date, datetime, timedelta
 import math
 from wechatpy import WeChatClient
 from wechatpy.client.api import WeChatMessage, WeChatTemplate
-import requests
 import os
 import random
 import json
@@ -12,6 +11,7 @@ import random
 from bs4 import BeautifulSoup
 import time
 import re
+import requests, bs4, tkinter
 
 
 today = datetime.now() + timedelta(hours=8)
@@ -150,32 +150,39 @@ def get_Month():
       return "0"+str(lt)
 
 def get_Day():
-  return str(time.localtime()[2])
+  day = str(time.localtime()[2])
+  if len(day) != 2:
+      day = "0" + day
+  return day
 
-def get_ts(): # 获取时间戳
-  return time.time()
+def get_infomation():
+  xx = []
+  a = get_Month()
+  b = get_Day()
+  c = a + b
 
-def returnApi():
-  month = get_Month()
-  day = get_Day()
-  ts = get_ts()
-  headers = {
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36",
-  }
-  if (len(day) != 2):
-    day = day+"0";
-  url = "https://baike.baidu.com/cms/home/eventsOnHistory/"+month+".json?_="+str(ts)
-  html = requests.get(url=url,headers=headers).json()
-  year = html[month][month + day][0]['year']  # 获取事件的年
-  title = html[month][month + day][0]['title']  # 获取事件的标题
-  title = re.sub(r'<.*?>', '', title)  # 去掉标题里一堆的超链接
-  return year, title
+  information = requests.get("http://hao.360.com/histoday/" + str(c) + ".html").text
+  s = bs4.BeautifulSoup(information, "lxml").find_all(name='div', class_='tih-list')
+
+  for x in s:
+    xx = x.find_all(name="dt")
+  for y in s:
+    yy = y.find_all(class_="desc")
+  for i in range(100):
+      try:
+          a = xx[i].text
+      except:
+          break
+
+  text = str(xx[0])
+  formatted_text = text.replace("<dt>", "").replace("<em>", "").replace("</em>", "").replace("</dt>", "").replace("1. ", "")
+  return formatted_text[:4], formatted_text[6:]
 
 client = WeChatClient(app_id, app_secret)
 wm = WeChatMessage(client)
 text_weather, text_min_temp, text_max_temp = get_weather()
 color_1,summary,number = get_lucky()
-date1,title = returnApi()
+date1,title = get_infomation()
 info = get_info()
 date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
 today_date = json.dumps(today, cls=ComplexEncoder)
