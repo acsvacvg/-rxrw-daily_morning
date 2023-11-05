@@ -13,3 +13,5 @@ wechatpy==1.8.18
 xmltodict==0.13.0
 bs4==0.0.1
 lxml==4.9.1
+libxml2-devel==2.6.32
+libxml2-python==2.6.26
