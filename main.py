@@ -12,7 +12,6 @@ from bs4 import BeautifulSoup
 import time
 import re
 import requests, bs4, tkinter
-import lxml
 
 
 today = datetime.now() + timedelta(hours=8)
@@ -163,7 +162,7 @@ def get_infomation():
   c = a + b
 
   information = requests.get("http://hao.360.com/histoday/" + str(c) + ".html").text
-  s = BeautifulSoup(information, "xml").find_all(name='div', class_='tih-list')
+  s = BeautifulSoup(information, "html.parser").find_all(name='div', class_='tih-list')
 
   for x in s:
     xx = x.find_all(name="dt")
