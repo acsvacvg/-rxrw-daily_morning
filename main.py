@@ -162,13 +162,13 @@ def get_infomation():
   c = a + b
 
   information = requests.get("http://hao.360.com/histoday/" + str(c) + ".html").text
-  s = bs4.BeautifulSoup(information, "lxml").find_all(name='div', class_='tih-list')
+  s = BeautifulSoup(information, "lxml").find_all(name='div', class_='tih-list')
 
   for x in s:
     xx = x.find_all(name="dt")
   for y in s:
     yy = y.find_all(class_="desc")
-  for i in range(100):
+  for i in range(5):
       try:
           a = xx[i].text
       except:
