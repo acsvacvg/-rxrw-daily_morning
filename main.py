@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 import time
 import re
 import requests, bs4, tkinter
+import lxml
 
 
 today = datetime.now() + timedelta(hours=8)
