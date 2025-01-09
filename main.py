@@ -120,7 +120,7 @@ def get_random_color():
   return "#%06x" % random.randint(0, 0xFFFFFF)
 
 def get_lucky():
-  url = "http://web.juhe.cn:8080/constellation/getAll?consName=金牛座&type=today&key=4a11bbcbf089edaf14c2d9bdb80c2ec4"
+  url = "http://web.juhe.cn:8080/constellation/getAll?consName='+金牛座+'&type=today&key=4a11bbcbf089edaf14c2d9bdb80c2ec4"
   res = requests.get(url)
   res = json.loads(res.text, strict=False)
   return res['color'], res['QFriend'], res['number']
