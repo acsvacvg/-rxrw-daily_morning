@@ -119,11 +119,11 @@ def get_words():
 def get_random_color():
   return "#%06x" % random.randint(0, 0xFFFFFF)
 
-def get_lucky():
-  url = "http://web.juhe.cn:8080/constellation/getAll?consName='+金牛座+'&type=today&key=4a11bbcbf089edaf14c2d9bdb80c2ec4"
-  res = requests.get(url)
-  res = json.loads(res.text, strict=False)
-  return res['color'], res['QFriend'], res['number']
+# def get_lucky():
+#   url = "http://web.juhe.cn:8080/constellation/getAll?consName='+金牛座+'&type=today&key=4a11bbcbf089edaf14c2d9bdb80c2ec4"
+#   res = requests.get(url)
+#   res = json.loads(res.text, strict=False)
+#   return res['color'], res['QFriend'], res['number']
 
 
 def get_info():
@@ -181,7 +181,7 @@ def get_infomation():
 client = WeChatClient(app_id, app_secret)
 wm = WeChatMessage(client)
 text_weather, text_min_temp, text_max_temp = get_weather()
-color_1,summary,number = get_lucky()
+# color_1,summary,number = get_lucky()
 date1,title = get_infomation()
 info = get_info()
 date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
@@ -189,8 +189,13 @@ today_date = json.dumps(today, cls=ComplexEncoder)
 
 data = {"city":{"value":city}, "date":{"value":today_date}, "text_weather":{"value":text_weather},
         "text_min_temp":{"value": text_min_temp}, "text_max_temp":{"value": text_max_temp},
-        "love_days":{"value":get_count()}, "words":{"value":get_words()}, "color_1": {"value": color_1}, "date_1": {"value": date_1},
-        "title": {"value": title}, "summary": {"value": summary}, 
-        "info": {"value": info}, "number": {"value": number}}
+        "love_days":{"value":get_count()}, "words":{"value":get_words()}, 
+        # "color_1": {"value": color_1}, 
+        "date_1": {"value": date_1},
+        "title": {"value": title},
+        # "summary": {"value": summary}, 
+        "info": {"value": info}, 
+        # "number": {"value": number}
+       }
 res = wm.send_template(user_id, template_id, data)
 print(res)
