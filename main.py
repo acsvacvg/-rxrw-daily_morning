@@ -126,12 +126,12 @@ def get_random_color():
 #   return res['color'], res['QFriend'], res['number']
 
 
-def get_info():
-  url = "http://v.juhe.cn/toutiao/index?type=yule&key=d268884b9b07c0eb9d6093dc54116018"
-  res = requests.get(url)
-  res = json.loads(res.text, strict=False)['result']
-  info = res['data'][0]['title']
-  return info
+# def get_info():
+#   url = "http://v.juhe.cn/toutiao/index?type=yule&key=d268884b9b07c0eb9d6093dc54116018"
+#   res = requests.get(url)
+#   res = json.loads(res.text, strict=False)['result']
+#   info = res['data'][0]['title']
+#   return info
 
 # def get_history():
 #   headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"}
@@ -183,7 +183,7 @@ wm = WeChatMessage(client)
 text_weather, text_min_temp, text_max_temp = get_weather()
 # color_1,summary,number = get_lucky()
 date1,title = get_infomation()
-info = get_info()
+# info = get_info()
 date_1 = json.dumps(date1,cls=MyEncoder,indent=4)
 today_date = json.dumps(today, cls=ComplexEncoder)
 
@@ -194,7 +194,7 @@ data = {"city":{"value":city}, "date":{"value":today_date}, "text_weather":{"val
         "date_1": {"value": date_1},
         "title": {"value": title},
         # "summary": {"value": summary}, 
-        "info": {"value": info}, 
+        # "info": {"value": info}, 
         # "number": {"value": number}
        }
 res = wm.send_template(user_id, template_id, data)
